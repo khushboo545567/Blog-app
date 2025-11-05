@@ -4,7 +4,11 @@ import { ApiError } from "../utils/apiError.js";
 import { uploadOnCloudnary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { Role } from "../models/roles.model.js";
-import { emailVerificationContent, sendMail } from "../utils/mail.js";
+import {
+  emailVerificationContent,
+  forgetPasswordMailgenContent,
+  sendMail,
+} from "../utils/mail.js";
 
 // GENERATE ACCESS AND REFRESH TOKEN
 const generateAccessAndRefreshToken = async (userId) => {
@@ -91,6 +95,7 @@ const registerUser = asyncHandler(async (req, res) => {
     );
 });
 
+// LOGIN USER
 const loginUser = asyncHandler(async (req, res) => {
   const { userName, email, password } = req.body;
 
@@ -137,16 +142,92 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-const logoutUser = asyncHandler(async (req, res) => {});
+// LOGOUT USER
+const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: { refreshToken: "" },
+    },
+    { new: true }
+  );
 
-const getCurrentUser = asyncHandler(async (req, res) => {});
+  const Options = { httpOnly: true, secure: true };
 
-const fogetPasswrod = asyncHandler(async (req, res) => {});
+  return res
+    .status(200)
+    .clearCookie("accessToken", Options)
+    .clearCookie("refreshToken", Options)
+    .json(new ApiResponse(200, {}, "user loggedout seccessfully !"));
+});
 
-const changePasswrod = asyncHandler(async (req, res) => {});
+// GET CURRENT USER
+const getCurrentUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "user fetched successfully "));
+});
 
+// CHANGE THE PASSWORD OF USER
+const changePasswrod = asyncHandler(async (req, res) => {
+  const { oldPasswrod, newPassword } = req.body;
+  const user = await User.findById(req.user._id);
+
+  const hashOldPasswrod = user.isPasswordCorrect(oldPasswrod);
+  if (!hashOldPasswrod) {
+    throw new ApiResponse(400, "password is incorrect ");
+  }
+
+  user.password = newPassword;
+  // there is method that will automatically convert the unhashed pass to hashed pass in the model
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "password is changed successfully "));
+});
+
+// FORGET PASSWORD
+const fogetPasswrod = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiResponse(404, "user does not exist");
+  }
+
+  // /generate token
+  const { unHashedToken, hashedToken, tokenExpiry } =
+    user.generateTemporaryToken();
+
+  user.forgetPasswordToken = hashedToken;
+  user.expiryPasswordToken = tokenExpiry;
+
+  await user.save({ validateBeforeSave: false });
+
+  const passwordResetUrl = `http://localhost:3000/api/v1/users/reset-password?token=${unHashedToken}`;
+  const userName = user.userName;
+  const mailgenContent = forgetPasswordMailgenContent(
+    userName,
+    passwordResetUrl
+  );
+  sendMail({
+    email: user.email,
+    subject: "Reset your passwrod",
+    mailgenContent,
+  });
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, {}, "password reset has been sent to your email !")
+    );
+});
+
+// GENERATE REFRESH TOKEN
 const generateRefreshToken = asyncHandler(async (req, res) => {});
 
+// RESEND THE EMAIL IN CASE THE EAMIL IS EXPIRED
 const resendEmail = asyncHandler(async (req, res) => {});
 
 export {
