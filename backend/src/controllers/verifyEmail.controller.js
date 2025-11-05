@@ -11,10 +11,10 @@ const verifyEmail = asyncHandler(async (req, res) => {
     throw new ApiError(400, "missing or invalid token  !");
   }
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-
-  const user = User.findOne({
+  console.log(hashedToken);
+  const user = await User.findOne({
     emailVerificationToken: hashedToken,
-    emailVerificationTokenExpiry: { $gt: Date.now() },
+    emailExpiryVerificationToken: { $gt: Date.now() },
   });
 
   if (!user) {
@@ -23,7 +23,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
   user.isEmailVerified = true;
   user.emailVerificationToken = undefined;
-  user.emailVerificationTokenExpiry = undefined;
+  user.emailExpiryVerificationToken = undefined;
 
   await user.save();
 

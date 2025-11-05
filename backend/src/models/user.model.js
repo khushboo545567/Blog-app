@@ -90,15 +90,15 @@ userSchema.methods.generateRefershToken = function () {
 
 // generate the token for password reset and password forget
 userSchema.methods.generateTemporaryToken = function () {
-  const unHahsedToken = crypto.randomBytes(20).toString("hex");
+  const unHashedToken = crypto.randomBytes(20).toString("hex");
   const hashedToken = crypto
     .createHash("sha256")
-    .update(unHahsedToken)
+    .update(unHashedToken)
     .digest("hex");
 
   const min = 20 * 60 * 1000;
   const tokenExpiry = Date.now() + min;
-  return { unHahsedToken, hashedToken, tokenExpiry };
+  return { unHashedToken, hashedToken, tokenExpiry };
 };
 
 export const User = mongoose.model("User", userSchema);

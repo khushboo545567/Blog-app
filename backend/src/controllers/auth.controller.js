@@ -38,16 +38,17 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // Generate email verification token
-  const { unHahsedToken, hashedToken, tokenExpiry } = generateTemporaryToken();
+  const { unHashedToken, hashedToken, tokenExpiry } =
+    user.generateTemporaryToken();
 
   user.emailVerificationToken = hashedToken;
-  user.emailVerificationTokenExpiry = tokenExpiry;
+  user.emailExpiryVerificationToken = tokenExpiry;
 
   // save user before sending email
   await user.save({ validateBeforeSave: false });
 
   // Generate verification link (frontend or backend endpoint)
-  const verificationUrl = `http://localhost:3000/api/v1/users/verify-email?token=${unHahsedToken}`;
+  const verificationUrl = `http://localhost:3000/api/v1/users/verify-email?token=${unHashedToken}`;
 
   // Send verification email
   const mailgenContent = emailVerificationContent(userName, verificationUrl);
