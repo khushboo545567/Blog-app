@@ -222,13 +222,86 @@ const fogetPasswrod = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(200, {}, "password reset has been sent to your email !")
     );
-});
+}); // goget password controller is not here
 
 // GENERATE REFRESH TOKEN
-const generateRefreshToken = asyncHandler(async (req, res) => {});
+const generateRefreshToken = asyncHandler(async (req, res) => {
+  const incommingRefreshToken =
+    req.cookies.refreshToken || req.body.refreshToken;
+
+  if (!incommingRefreshToken) {
+    throw new ApiError(401, "unautharized access");
+  }
+  const decodeRefreshToken = jwt.verify(
+    incommingRefreshToken,
+    process.env.REFRESHTOKEN_SECRET
+  );
+  const user = await User.findById(decodeRefreshToken.id);
+  if (!user) {
+    throw new ApiError(401, "Invalid refresh token - user not found ");
+  }
+
+  if (incommingRefreshToken !== user.refreshToken) {
+    throw new ApiError(401, "refresh token is invalid or expired");
+  }
+
+  // generate new token
+  const { AccessToken, RefreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
+
+  const Options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", AccessToken, Options)
+    .cookie("refreshToken", RefreshToken, Options)
+    .json(
+      new ApiResponse(
+        200,
+        { AccessToken, RefreshToken },
+        "Access token refreshed successfully"
+      )
+    );
+});
 
 // RESEND THE EMAIL IN CASE THE EAMIL IS EXPIRED
-const resendEmail = asyncHandler(async (req, res) => {});
+const resendEmail = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.find({ email });
+  if (!user) {
+    throw new ApiError(404, "user not found ");
+  }
+
+  if (user.isEmailVerified) {
+    throw new ApiError(400, "email  is already verified");
+  }
+
+  // generate token
+  const { unHashedToken, hashedToken, tokenExpiry } =
+    user.generateTemporaryToken();
+
+  user.emailVerificationToken = hashedToken;
+  user.emailExpiryVerificationToken = tokenExpiry;
+
+  // save the token to the DB
+  await user.save({ validateBeforeSave: false });
+
+  const verificationUrl = `http://localhost:3000/api/v1/users/verify-email?token=${unHashedToken}`;
+  const userName = user.userName;
+  const mailgenContent = emailVerificationContent(userName, verificationUrl);
+
+  // sending mail
+  sendMail({ userName, subject: "verify your email", mailgenContent });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "mail is send to verify the email"));
+});
 
 export {
   registerUser,
