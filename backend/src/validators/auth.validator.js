@@ -35,4 +35,35 @@ const loginUserValidator = () => {
       .withMessage("passowrd should be of min 6 char"),
   ];
 };
-export { registerUserValidator, loginUserValidator };
+
+const changePasswrodValidator = () => {
+  return [
+    body("oldPasswrod")
+      .notEmpty()
+      .withMessage("password is required")
+      .isLength({ min: 6 })
+      .withMessage("passowrd should be of min 6 char"),
+    body("newPassword")
+      .notEmpty()
+      .withMessage("Password is required")
+      .isLength({ min: 6 })
+      .withMessage("password should be of minimum 6 char"),
+  ];
+};
+
+const forgetPasswordValidator = () => {
+  return [
+    body("email")
+      .trim()
+      .notEmpty()
+      .withMessage("Email is required")
+      .isEmail()
+      .withMessage("Email is invalid"),
+  ];
+};
+export {
+  registerUserValidator,
+  loginUserValidator,
+  changePasswrodValidator,
+  forgetPasswordValidator,
+};

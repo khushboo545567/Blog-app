@@ -9,6 +9,7 @@ import {
   forgetPasswordMailgenContent,
   sendMail,
 } from "../utils/mail.js";
+import bcrypt from "bcrypt";
 
 // GENERATE ACCESS AND REFRESH TOKEN
 const generateAccessAndRefreshToken = async (userId) => {
@@ -145,7 +146,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // LOGOUT USER
 const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
-    req.user._id,
+    req.user.id,
     {
       $set: { refreshToken: "" },
     },
@@ -163,7 +164,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 // GET CURRENT USER
 const getCurrentUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user.id);
   return res
     .status(200)
     .json(new ApiResponse(200, user, "user fetched successfully "));
@@ -303,6 +304,50 @@ const resendEmail = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "mail is send to verify the email"));
 });
 
+// UPDATE USER PROFILE
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const { userName, email, password, bio } = req.body;
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    throw new ApiError(404, "user does not exist");
+  }
+
+  const userData = {};
+  if (userName) {
+    userData.userName = userName;
+  }
+  if (email) {
+    userData.email = email;
+  }
+  if (bio) {
+    userData.bio = bio;
+  }
+  // updating the avatar
+  if (req.file?.path) {
+    const avatarUrl = await uploadOnCloudnary(req.file?.path);
+    if (avatarUrl) {
+      userData.avatar = avatarUrl;
+    }
+  }
+
+  // password change
+  if (password) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    userData.password = hashedPassword;
+  }
+  const updatedUserData = await User.findByIdAndUpdate(
+    req.user.id,
+    { $set: userData },
+    { new: true }
+  ).select("-password"); // exclude password if not needed
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, updatedUserData, "details updated successfully !")
+    );
+});
+
 export {
   registerUser,
   loginUser,
@@ -312,4 +357,5 @@ export {
   changePasswrod,
   generateRefreshToken,
   resendEmail,
+  updateUserProfile,
 };
