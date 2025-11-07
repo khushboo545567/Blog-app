@@ -3,13 +3,17 @@ import mongoose from "mongoose";
 const postSchema = mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
-    body: { type: String, required: true },
+    description: { type: String, required: true },
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
     postImage: [
       {
         type: String, // store URLs or file paths

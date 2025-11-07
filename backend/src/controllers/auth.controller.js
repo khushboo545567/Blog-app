@@ -19,10 +19,9 @@ const generateAccessAndRefreshToken = async (userId) => {
     // / Call the methods to generate tokens
     const AccessToken = user.generateAccessToken();
     const RefreshToken = user.generateRefershToken();
-    await user.save({ validateBeforeSave: false });
-
     // // Store refresh token in DB (if you want)
     user.refreshToken = RefreshToken;
+    await user.save({ validateBeforeSave: false });
     return { AccessToken, RefreshToken };
   } catch (error) {
     throw new ApiError(
@@ -66,7 +65,8 @@ const registerUser = asyncHandler(async (req, res) => {
   // Generate email verification token
   const { unHashedToken, hashedToken, tokenExpiry } =
     user.generateTemporaryToken();
-
+  // console.log(unHashedToken);
+  // console.log(hashedToken);
   user.emailVerificationToken = hashedToken;
   user.emailExpiryVerificationToken = tokenExpiry;
 
@@ -275,7 +275,7 @@ const generateRefreshToken = asyncHandler(async (req, res) => {
 const resendEmail = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
-  const user = await User.find({ email });
+  const user = await User.findOne({ email });
   if (!user) {
     throw new ApiError(404, "user not found ");
   }
@@ -299,7 +299,7 @@ const resendEmail = asyncHandler(async (req, res) => {
   const mailgenContent = emailVerificationContent(userName, verificationUrl);
 
   // sending mail
-  sendMail({ userName, subject: "verify your email", mailgenContent });
+  sendMail({ email, subject: "verify your email", mailgenContent });
 
   return res
     .status(200)
