@@ -1,22 +1,65 @@
 import asyncHandler from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
+import { ApiError } from "../utils/apiError.js";
 import { Like } from "../models/like.model.js";
+import { Post } from "../models/post.model.js";
+import { Comment } from "../models/comment.model.js"; // if exists
 
-// who like the post or comment userid, postid, or commentid , but how do i know ids is post one or comment one
 const like = asyncHandler(async (req, res) => {
   const userId = req.user.id;
-  const likedId = req.param;
-  const onWhatLiked = req.param;
-  const liking = await Like.create({
-    targetId: likedId,
+  const { postOrCommentId, targetModel } = req.params;
+
+  //   validate target model
+  if (!["Post", "Comment"].includes(targetModel)) {
+    throw new ApiError(
+      400,
+      "Invalid target model it should be post, or comment"
+    );
+  }
+
+  //   check if already exists
+  const existingLike = await Like.findOne({
     likedBy: userId,
-    targetModel: onWhatLiked,
+    postOrCommentId,
+    targetModel,
   });
+  //   if the user liked then unlike the post
+  if (existingLike) {
+    // unlike
+    await existingLike.deleteOne();
+
+    // decrement like count
+    if (targetModel === "Post") {
+      await Post.findByIdAndUpdate(postOrCommentId, {
+        $inc: { likesCount: -1 },
+      });
+    } else {
+      await Comment.findByIdAndUpdate(postOrCommentId, {
+        $inc: { likesCount: -1 },
+      });
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, null, `${targetModel} unliked successfully `));
+  }
+  //   like
+
+  await Like.create({ likedBy: userId, postOrCommentId, targetModel });
+
+  if (targetModel === "Post") {
+    await Post.findByIdAndUpdate(postOrCommentId, {
+      $inc: { likesCount: 1 },
+    });
+  } else {
+    await Comment.findByIdAndUpdate(postOrCommentId, {
+      $inc: { likesCount: 1 },
+    });
+  }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, "user liked post / comment successfully"));
+    .json(new ApiResponse(200, null, `${targetModel} liked successfully`));
 });
 
 export { like };
