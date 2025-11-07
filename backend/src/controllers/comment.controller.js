@@ -2,25 +2,34 @@ import asyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { Comment } from "../models/comment.model.js";
-import { constants } from "crypto";
+import { Post } from "../models/post.model.js";
 
 // get the userId who commented  , get teh id of post , like count , what is the comment
 const comment = asyncHandler(async (req, res) => {
   const userId = req.user.id;
-  const postId = req.params;
+  const { postId } = req.params;
   const { text } = req.body;
 
+  //check if posts exists or not
+  const post = await post.findById(postId);
+  if (!post) {
+    throw new ApiError(404, "post does not found ");
+  }
+
+  // create the comment
   const commented = await Comment.create({
     commentedBy: userId,
     commentOnPost: postId,
-    likecount,
     text,
   });
+
+  // increment the posts comment count
+  await Post.findbyIdAndUpdate(postId, { $inc: { commentsCount: 1 } });
 
   return res
     .status(200)
     .json(
-      new ApiResponse(200, commented, "user commented successfully on post")
+      new ApiResponse(201, commented, "user commented successfully on post")
     );
 });
 
