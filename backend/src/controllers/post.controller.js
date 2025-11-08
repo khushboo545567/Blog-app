@@ -3,22 +3,30 @@ import asyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { uploadOnCloudnary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/apiResponse.js";
+import sharp from "sharp";
 
 // user and admin can post article
 const PostAticle = asyncHandler(async (req, res) => {
   const { id } = req.user;
-  const { category } = req.params;
+  const { categoryId } = req.params;
   const { title, description } = req.body;
 
   // post details
-  const postObj = { title, description, postedBy: id, category };
+  const postObj = { title, description, postedBy: id, category: categoryId };
 
-  // post on cloudnary
-  if (req.file?.path) {
-    const postUrl = await uploadOnCloudnary(req.file.path);
-    if (postUrl) {
-      postObj.postImage = [postUrl];
-    }
+  // 🖼️ Step 2: Handle multiple images
+  if (req.files && req.files.length > 0) {
+    const imageUploadPromises = req.files.map(async (file) => {
+      const uploadedImage = await uploadOnCloudnary(file.path);
+      return uploadedImage;
+    });
+
+    const uploadedResults = await Promise.all(imageUploadPromises);
+
+    // Only store secure URLs
+    const uploadedUrls = uploadedResults.map((img) => img.secure_url);
+
+    postObj.postImage = uploadedUrls;
   }
 
   // create post
