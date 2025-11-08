@@ -5,14 +5,15 @@ import { Role } from "../models/roles.model.js";
 
 const createRole = asyncHandler(async (req, res) => {
   const { role } = req.body;
-
+  const roleName = role.trim().toLowerCase();
   // check if the role is already exists
-  const existingRole = await Role.findOne({ name: role });
+  const existingRole = await Role.findOne({ name: roleName });
   if (existingRole) {
     throw new ApiError(409, "this role is already exists");
   }
 
-  const createdRoleByAdmin = await Role.create({ name: role });
+  const createdRoleByAdmin = await Role.create({ name: roleName });
+
   return res
     .status(201)
     .json(
