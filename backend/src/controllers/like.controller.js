@@ -9,6 +9,8 @@ const like = asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const { postOrCommentId, targetModel } = req.params;
 
+  // console.log("checking the ids -> ", postOrCommentId, targetModel);
+
   //   validate target model
   if (!["Post", "Comment"].includes(targetModel)) {
     throw new ApiError(
@@ -20,7 +22,7 @@ const like = asyncHandler(async (req, res) => {
   //   check if already exists
   const existingLike = await Like.findOne({
     likedBy: userId,
-    postOrCommentId,
+    targetId: postOrCommentId,
     targetModel,
   });
   //   if the user liked then unlike the post
@@ -35,7 +37,7 @@ const like = asyncHandler(async (req, res) => {
       });
     } else {
       await Comment.findByIdAndUpdate(postOrCommentId, {
-        $inc: { likesCount: -1 },
+        $inc: { likeCount: -1 },
       });
     }
 
@@ -45,7 +47,11 @@ const like = asyncHandler(async (req, res) => {
   }
   //   like
 
-  await Like.create({ likedBy: userId, postOrCommentId, targetModel });
+  await Like.create({
+    likedBy: userId,
+    targetId: postOrCommentId,
+    targetModel,
+  });
 
   if (targetModel === "Post") {
     await Post.findByIdAndUpdate(postOrCommentId, {
@@ -53,7 +59,7 @@ const like = asyncHandler(async (req, res) => {
     });
   } else {
     await Comment.findByIdAndUpdate(postOrCommentId, {
-      $inc: { likesCount: 1 },
+      $inc: { likeCount: 1 },
     });
   }
 

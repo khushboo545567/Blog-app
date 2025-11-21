@@ -18,9 +18,10 @@ const PostAticle = asyncHandler(async (req, res) => {
   // 🖼️ Step 2: Handle multiple images
   if (req.files && req.files.length > 0) {
     const imageUploadPromises = req.files.map(async (file) => {
-      const compressedPath = `uploads/compressed-${file.filename}`;
+      const compressedPath = `public/temp-${file.filename}`;
+      console.log("file name ", file.filename);
 
-      // reduce the file to 70% compression
+      // compress
       await sharp(file.path)
         .resize({ width: 1000 })
         .jpeg({ quality: 70 })
@@ -28,11 +29,32 @@ const PostAticle = asyncHandler(async (req, res) => {
 
       const uploadedImage = await uploadOnCloudnary(compressedPath);
 
-      // clean up local files
-      fs.unlinkSync(file.path);
-      fs.unlinkSync(compressedPath);
+      // safe cleanup using fs.promises and checks
+      try {
+        if (file.path && fs.existsSync(file.path)) {
+          await fs.promises.unlink(file.path);
+        }
+      } catch (err) {
+        console.warn(
+          "Could not delete original temp file:",
+          file.path,
+          err.message
+        );
+      }
 
-      return uploadedImage;
+      try {
+        if (compressedPath && fs.existsSync(compressedPath)) {
+          await fs.promises.unlink(compressedPath);
+        }
+      } catch (err) {
+        console.warn(
+          "Could not delete compressed file:",
+          compressedPath,
+          err.message
+        );
+      }
+
+      return uploadedImage; // may be null if upload failed
     });
 
     const uploadedResults = await Promise.all(imageUploadPromises);

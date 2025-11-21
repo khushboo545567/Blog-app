@@ -8,7 +8,7 @@ const commentSchema = mongoose.Schema(
       required: true,
     },
     text: String,
-    likecount: { type: Number, default: 0 },
+    likeCount: { type: Number, default: 0 },
     commentOnPost: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",

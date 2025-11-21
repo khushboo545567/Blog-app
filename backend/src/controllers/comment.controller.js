@@ -5,13 +5,13 @@ import { Comment } from "../models/comment.model.js";
 import { Post } from "../models/post.model.js";
 
 // get the userId who commented  , get teh id of post , like count , what is the comment
-const comment = asyncHandler(async (req, res) => {
+const commentOn = asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const { postId } = req.params;
   const { text } = req.body;
 
   //check if posts exists or not
-  const post = await post.findById(postId);
+  const post = await Post.findById(postId);
   if (!post) {
     throw new ApiError(404, "post does not found ");
   }
@@ -24,7 +24,7 @@ const comment = asyncHandler(async (req, res) => {
   });
 
   // increment the posts comment count
-  await Post.findbyIdAndUpdate(postId, { $inc: { commentsCount: 1 } });
+  await Post.findByIdAndUpdate(postId, { $inc: { commentsCount: 1 } });
 
   return res
     .status(200)
@@ -33,4 +33,4 @@ const comment = asyncHandler(async (req, res) => {
     );
 });
 
-export { comment };
+export { commentOn };
