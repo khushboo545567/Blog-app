@@ -18,4 +18,6 @@ const commentSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+// add a middleware to add on delete cascade -> when the commentdelete the like on that comment should be delete
+
 export const Comment = mongoose.model("Comment", commentSchema);

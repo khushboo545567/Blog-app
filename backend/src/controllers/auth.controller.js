@@ -53,7 +53,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     bio,
-    role: userRole._id,
+    role: [userRole._id],
   });
 
   // Upload avatar to Cloudinary if provided

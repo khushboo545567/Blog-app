@@ -22,11 +22,13 @@ const userSchema = mongoose.Schema(
       default: { url: `https://placehold.co/200x200`, localPath: "" },
     },
     bio: { type: String, maxlength: 100 },
-    role: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Role",
-      required: true,
-    },
+    // role changed to the array
+    role: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Role",
+      },
+    ],
     isBlocked: {
       type: Boolean,
       default: false,
