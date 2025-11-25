@@ -7,9 +7,11 @@ import { User } from "../models/user.model.js";
 // add a role to the user
 const addRoleToUser = asyncHandler(async (req, res, next) => {
   const { userName, role } = req.body;
-
+  console.log(userName, role);
   // check if the username and role already exits
   const existUserName = await User.findOne({ userName });
+  console.log("existUserName", existUserName);
+
   if (!existUserName) throw new ApiError(404, "User not found");
   const existsRole = await Role.findOne({ name: role });
   if (!existsRole) throw new ApiError(404, "Role not found");

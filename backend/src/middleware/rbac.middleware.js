@@ -42,12 +42,10 @@ const authorizeRoles = (...allowedRoles) => {
     const user = req.user;
     if (!user) throw new ApiError(401, "Unauthenticated");
 
-    console.log("allowed roles", allowedRoles);
     const allowed = allowedRoles.map((r) => String(r).trim().toLowerCase());
 
     // resolveRoleName now returns an array
     const userRoleNames = await resolveRoleName(user);
-    console.log("userroles name", userRoleNames);
 
     // Defensive: ensure it's an array before using .some
     if (!Array.isArray(userRoleNames) || userRoleNames.length === 0) {
@@ -63,6 +61,7 @@ const authorizeRoles = (...allowedRoles) => {
   });
 };
 
+// IF ROLES ARE NOT PRESENT CHECK FOR OWNERSHIP
 const allowRoleOrOwner = (resourceModel, options = {}) =>
   asyncHandler(async (req, res, next) => {
     const user = req.user;

@@ -8,6 +8,7 @@ import comment from "./routes/comment.route.js";
 import likeRouter from "./routes/like.route.js";
 import assignRole from "./routes/asignrole.route.js";
 import role from "./routes/role.route.js";
+import permission from "./routes/permission.route.js";
 
 const app = express();
 app.use(express.json());
@@ -41,8 +42,13 @@ app.use("/api/v1/like", likeRouter);
 // assigning role to the user
 app.use("/api/v1/assignrole", assignRole);
 
-// create role
+// manage role by the admin
 app.use("/api/v1/role", role);
+
+// permission handling by the admin
+app.use("/api/v1/pemission", permission);
+
+//
 
 // errorHandling
 app.use(errorMiddleware);
