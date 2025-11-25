@@ -9,6 +9,7 @@ import likeRouter from "./routes/like.route.js";
 import assignRole from "./routes/asignrole.route.js";
 import role from "./routes/role.route.js";
 import permission from "./routes/permission.route.js";
+import rolePermission from "./routes/rolePermission.route.js";
 
 const app = express();
 app.use(express.json());
@@ -47,6 +48,9 @@ app.use("/api/v1/role", role);
 
 // permission handling by the admin
 app.use("/api/v1/pemission", permission);
+
+// assign permission to the role
+app.use("/api/v1/rolePermission", rolePermission);
 
 //
 

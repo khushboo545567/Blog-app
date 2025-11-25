@@ -7,14 +7,14 @@ import { RolePermission } from "../models/rolePermission.model.js";
 
 const assignPermissionToRole = asyncHandler(async (req, res) => {
   const { roleName, resource, action } = req.body;
-
+  console.log("roleName", roleName);
   //   prevents form case sencitive
   const roleNameLower = roleName.trim().toLowerCase();
   const resourceLower = resource.trim().toLowerCase();
   const actionLower = action.trim().toLowerCase();
 
   //   check if role exists
-  const existingRole = await Role.findOne({ roleName: roleNameLower });
+  const existingRole = await Role.findOne({ name: roleNameLower });
   if (!existingRole) {
     throw new ApiError(404, "Role does not exists");
   }
