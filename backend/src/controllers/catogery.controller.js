@@ -26,9 +26,25 @@ const createCatogery = asyncHandler(async (req, res) => {
 });
 
 // get the catogery so that user can see all the catogery
-const getCatogery = asyncHandler(async (req, res) => {});
+const getCatogery = asyncHandler(async (req, res) => {
+  const categories = await Catogery.find({});
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, categories, "category fetched successfully!"));
+});
 
 // delete the catogery
-const deleteCatogery = asyncHandler(async (req, res) => {});
+const deleteCatogery = asyncHandler(async (req, res) => {
+  const { catId } = req.params;
+  const removeCat = await Catogery.findByIdAndDelete(catId);
+  if (!removeCat) {
+    throw new ApiError(404, "catogery not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "category deleted successfully"));
+});
 
 export { createCatogery, getCatogery, deleteCatogery };
