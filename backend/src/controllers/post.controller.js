@@ -5,6 +5,7 @@ import { uploadOnCloudnary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import sharp from "sharp";
 import fs, { link } from "fs";
+import { Catogery } from "../models/catogery.model.js";
 
 // user and admin can post article
 const PostAticle = asyncHandler(async (req, res) => {
@@ -157,7 +158,19 @@ const getPostForUser = asyncHandler(async (req, res) => {
 });
 
 // get post when applying filter on the catogeries
-const getPostByFilter = asyncHandler(async (req, res) => {});
+const getPostByFilter = asyncHandler(async (req, res) => {
+  const { filterName } = req.params;
+  const catId = await Catogery.findOne({ categoryName: filterName }).select(
+    "_id"
+  );
+
+  const posts = await Post.find({ category: catId })
+    .populate("category", "categoryName")
+    .select("title description postImage likesCount commentsCount createdAt")
+    .sort({ createdAt: -1 });
+
+  return res.status(200).json(200, posts, "posts get successfully");
+});
 
 // admin and author can delte the post , get the post id form the params , and uid from the token
 // while deleting the post delete the like and comment of that post
@@ -170,4 +183,4 @@ const deletePost = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "post deleted successfully !"));
 });
 
-export { PostAticle, deletePost, editArticle };
+export { PostAticle, deletePost, editArticle, getPostForUser, getPostByFilter };
