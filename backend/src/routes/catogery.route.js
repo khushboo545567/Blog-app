@@ -5,6 +5,7 @@ import {
   deleteCatogery,
   getCatogery,
 } from "../controllers/catogery.controller.js";
+import { authorizeRoles } from "../middleware/rbac.middleware.js";
 
 const router = Router();
 

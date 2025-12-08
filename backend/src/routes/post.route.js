@@ -10,6 +10,7 @@ import {
   getPostForUser,
   PostAticle,
 } from "../controllers/post.controller.js";
+import { authorizeRoles } from "../middleware/rbac.middleware.js";
 
 const router = Router();
 
@@ -29,7 +30,7 @@ router
 
 router.route("/get-post-by-filter/:filterName").get(verifyJwt, getPostByFilter);
 
-router.route("/get-post-for-user/:userId").get(verifyJwt, getPostForUser);
+router.route("/get-post-for-user/:userId ").get(verifyJwt, getPostForUser);
 
 router.route("/delete-post/:postId").put(verifyJwt, deletePost);
 
