@@ -164,10 +164,11 @@ export const getPostForAdmin = asyncHandler(async (req, res) => {
 
 // the user can also view their own posts take the uid form the req.param
 const getPostForUser = asyncHandler(async (req, res) => {
-  const { userId } = req.user.id;
-  const page = Number(req.query.page || 1);
+  const userId = req.user.id;
+  // parse page safely
+  const page = Number.parseInt(req.query.page, 10) || 1;
   const limit = 20;
-  const skip = (page - 1) * limit;
+  const skip = (Math.max(page, 1) - 1) * limit;
 
   const [posts, total] = await Promise.all([
     Post.find({ postedBy: userId })

@@ -30,7 +30,7 @@ router
 
 router.route("/get-post-by-filter/:filterName").get(verifyJwt, getPostByFilter);
 
-router.route("/get-post-for-user/:userId ").get(verifyJwt, getPostForUser);
+router.route("/get-post-for-user").get(verifyJwt, getPostForUser);
 
 router.route("/delete-post/:postId").put(verifyJwt, deletePost);
 
