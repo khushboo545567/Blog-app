@@ -9,19 +9,28 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Layout from "./layout/mainLayout.jsx";
+
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisgerPage from "./pages/RegisterPage.jsx";
+import AuthLayout from "./layout/authLayout.jsx";
+import MainLayout from "./layout/mainLayout.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
-      <Route path="" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisgerPage />} />
-      <Route path="/" element={<></>} />
-    </Route>
+    <>
+      {/* main routes */}
+      <Route path="/" element={<MainLayout />}>
+        <Route path="" element={<HomePage />} />
+
+        <Route path="/" element={<></>} />
+      </Route>
+      {/* auth routes */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<LoginPage />} />{" "}
+        <Route path="/register" element={<RegisgerPage />} />
+      </Route>
+    </>
   )
 );
 createRoot(document.getElementById("root")).render(
