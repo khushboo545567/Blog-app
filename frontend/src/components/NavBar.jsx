@@ -3,7 +3,7 @@ import "remixicon/fonts/remixicon.css";
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center justify-between bg-blue-600 px-6 py-3 text-white">
+    <nav className="fixed top-0 left-0 w-full h-16 bg-blue-600 text-white flex items-center justify-between  px-4 z-50">
       {/* Left Section */}
       <div className="flex items-center gap-4">
         <i className="ri-menu-line text-3xl cursor-pointer "></i>
