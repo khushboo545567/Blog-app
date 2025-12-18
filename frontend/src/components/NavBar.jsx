@@ -1,6 +1,6 @@
 import React from "react";
 import "remixicon/fonts/remixicon.css";
-// import useTheme from "../context/ThemeContext";
+import { Link } from "react-router-dom";
 import useTheme from "../context/ThemeContext";
 
 const Navbar = () => {
@@ -15,7 +15,9 @@ const Navbar = () => {
       {/* Left */}
       <div className="flex items-center gap-4">
         <i className="ri-menu-line text-3xl cursor-pointer"></i>
-        <i className="ri-remix-fill text-3xl"></i>
+        <Link to="/">
+          <i className="ri-remix-fill text-3xl"></i>
+        </Link>
 
         <div className="flex items-center bg-white text-black rounded-md px-3 py-1">
           <i className="ri-search-line text-gray-500"></i>
@@ -42,13 +44,13 @@ const Navbar = () => {
         </button>
 
         <button className="bg-blue-500 px-3 py-1 text-xl rounded-md hover:bg-blue-700">
-          Login
+          <Link to="/login">Login</Link>
         </button>
         <button className="bg-blue-500 px-3 py-1 text-xl rounded-md hover:bg-blue-700">
-          Signup
+          <Link to="/register">Signup</Link>
         </button>
         <button className="bg-amber-500 px-3 py-1 text-xl rounded-md hover:bg-amber-600 text-black">
-          Post
+          <Link to="/post">Post</Link>
         </button>
       </div>
     </nav>

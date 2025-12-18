@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 const Sidebar = () => {
   return (
     <div
@@ -10,6 +12,7 @@ const Sidebar = () => {
       "
     >
       <h2 className="text-lg font-semibold">Sidebar</h2>
+      <Link to="/profile">Profile</Link>
     </div>
   );
 };
