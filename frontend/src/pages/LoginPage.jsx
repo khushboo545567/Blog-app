@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const LoginPage = function () {
   const [formData, setFormData] = useState({ userName: "", password: "" });
-  console.log(formData);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -18,8 +19,12 @@ const LoginPage = function () {
           withCredentials: true,
         }
       );
+      if (response.data.success) {
+        toast.success(response.data.message || "User logged successfully");
+      }
     } catch (error) {
       console.error("Error:", error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
   return (
