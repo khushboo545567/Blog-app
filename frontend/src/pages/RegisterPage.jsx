@@ -89,6 +89,12 @@ const RegisgerPage = function () {
             />
           </div>
         </form>
+        <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
+          Already have an account?{" "}
+          <span className="text-blue-600 cursor-pointer hover:underline">
+            Login
+          </span>
+        </p>
       </div>
     </div>
   );
