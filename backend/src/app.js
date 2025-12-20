@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import errorMiddleware from "./middleware/error.middleware.js";
+import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js";
 import postarticle from "./routes/post.route.js";
 import catogery from "./routes/catogery.route.js";
@@ -15,7 +16,7 @@ import follow from "./routes/follow.route.js";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 // cors configuration
 app.use(
   cors({
