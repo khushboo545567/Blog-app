@@ -15,9 +15,13 @@ const RegisgerPage = function () {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(``, formData, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `http://localhost:3000/api/v1/users/register`,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
       console.log(response);
     } catch (error) {
       console.log(error);

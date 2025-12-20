@@ -18,9 +18,8 @@ const LoginPage = function () {
           withCredentials: true,
         }
       );
-      console.log(response);
     } catch (error) {
-      console.log(error);
+      console.error("Error:", error.response?.data?.message || error.message);
     }
   };
   return (
