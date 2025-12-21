@@ -22,6 +22,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import ErrorPage from "./pages/error404.jsx";
 import FeedPage from "./pages/FeedPage.jsx";
 import SavedItems from "./pages/SavedItemsPage.jsx";
+import StatusPage from "./pages/StatusPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/save" element={<SavedItems />} />
+        <Route path="/status" element={<StatusPage />} />
       </Route>
       {/* auth routes */}
       <Route element={<AuthLayout />}>

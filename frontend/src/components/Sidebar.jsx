@@ -43,7 +43,7 @@ const Sidebar = () => {
           <span className="text-black dark:text-white">Profile</span>
         </Link>
         <Link
-          to="#"
+          to="/status"
           className="flex gap-3 text-lg hover:bg-gray-100  p-2 rounded-sm hover:dark:bg-gray-700"
         >
           <i class="ri-bar-chart-fill text-black dark:text-white cursor-pointer"></i>
