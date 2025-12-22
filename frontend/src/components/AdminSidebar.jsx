@@ -13,55 +13,69 @@ const Sidebar = () => {
       "
     >
       <div className="flex flex-col gap-1">
+        {/* Admin Profile (Default Page) */}
+        <Link
+          to="/admin/profile"
+          className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
+        >
+          <i className="ri-user-3-fill text-black dark:text-white"></i>
+          <span className="text-black dark:text-white">Admin Profile</span>
+        </Link>
+
+        {/* Dashboard */}
         <Link
           to="/admin/dashboard"
-          className="flex gap-3 text-lg hover:bg-gray-100 p-2 rounded-sm hover:dark:bg-gray-700"
+          className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
         >
-          <i className="ri-home-2-fill text-black dark:text-white cursor-pointer "></i>
+          <i className="ri-dashboard-fill text-black dark:text-white"></i>
           <span className="text-black dark:text-white">Dashboard</span>
         </Link>
-        <Link
-          to="/feed"
-          className="flex gap-3 text-lg hover:bg-gray-100 p-2 rounded-sm hover:dark:bg-gray-700"
-        >
-          <i className="ri-article-line text-black dark:text-white cursor-pointer"></i>
 
-          <span className="text-black dark:text-white"> Manage Post</span>
-        </Link>
+        {/* Manage Roles */}
         <Link
-          to="/postblog"
-          className="flex gap-3 text-lg hover:bg-gray-100 p-2 rounded-sm hover:dark:bg-gray-700"
+          to="/admin/roles"
+          className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
         >
-          <i className="ri-edit-line text-black dark:text-white cursor-pointer"></i>
-
-          <span className="text-black dark:text-white">
-            Post Manage Comments
-          </span>
-        </Link>
-        <Link
-          to="/profile"
-          className="flex gap-3 text-lg hover:bg-gray-100  p-2 rounded-sm hover:dark:bg-gray-700"
-        >
-          <i className="ri-account-circle-fill text-black dark:text-white cursor-pointer"></i>
-          <span className="text-black dark:text-white">
-            Assign Permission To Role
-          </span>
-        </Link>
-        <Link
-          to="/status"
-          className="flex gap-3 text-lg hover:bg-gray-100  p-2 rounded-sm hover:dark:bg-gray-700"
-        >
-          <i className="ri-bar-chart-fill text-black dark:text-white cursor-pointer"></i>
-          <span className="text-black dark:text-white">
-            Assign role to user
-          </span>
-        </Link>
-        <Link
-          to="/status"
-          className="flex gap-3 text-lg hover:bg-gray-100  p-2 rounded-sm hover:dark:bg-gray-700"
-        >
-          <i className="ri-bar-chart-fill text-black dark:text-white cursor-pointer"></i>
+          <i className="ri-shield-user-fill text-black dark:text-white"></i>
           <span className="text-black dark:text-white">Manage Roles</span>
+        </Link>
+
+        {/* Manage Permissions */}
+        <Link
+          to="/admin/permissions"
+          className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
+        >
+          <i className="ri-lock-2-fill text-black dark:text-white"></i>
+          <span className="text-black dark:text-white">Manage Permissions</span>
+        </Link>
+
+        {/* Assign Permission to Role */}
+        <Link
+          to="/admin/assign-permissions"
+          className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
+        >
+          <i className="ri-key-fill text-black dark:text-white"></i>
+          <span className="text-black dark:text-white">Assign Permissions</span>
+        </Link>
+
+        {/* Assign Role to User */}
+        <Link
+          to="/admin/assign-roles"
+          className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
+        >
+          <i className="ri-team-fill text-black dark:text-white"></i>
+          <span className="text-black dark:text-white">
+            Assign Roles to Users
+          </span>
+        </Link>
+
+        {/* Manage Comments */}
+        <Link
+          to="/admin/comments"
+          className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
+        >
+          <i className="ri-chat-delete-fill text-black dark:text-white"></i>
+          <span className="text-black dark:text-white">Manage Comments</span>
         </Link>
       </div>
     </div>

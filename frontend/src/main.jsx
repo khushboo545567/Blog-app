@@ -25,8 +25,8 @@ import SavedItems from "./pages/SavedItemsPage.jsx";
 import StatusPage from "./pages/StatusPage.jsx";
 import BlogDetails from "./pages/BlogDetails.jsx";
 import PostBlog from "./pages/PostBlog.jsx";
-import DashBoard from "./pages/admin/DashBoard.jsx";
 import AdminLayout from "./layout/AdminLayout.jsx";
+import AdminProfile from "./pages/admin/AdminProfile.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -49,7 +49,7 @@ const router = createBrowserRouter(
       </Route>
       {/* admin routes */}
       <Route path="/admin" element={<AdminLayout />}>
-        <Route path="/admin/dashboard" element={<DashBoard />}></Route>
+        <Route path="/admin/profile" element={<AdminProfile />}></Route>
       </Route>
     </>
   )
