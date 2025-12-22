@@ -27,6 +27,7 @@ import BlogDetails from "./pages/BlogDetails.jsx";
 import PostBlog from "./pages/PostBlog.jsx";
 import AdminLayout from "./layout/AdminLayout.jsx";
 import AdminProfile from "./pages/admin/AdminProfile.jsx";
+import ManageRolePage from "./pages/admin/ManageRolePage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,14 +43,17 @@ const router = createBrowserRouter(
         <Route path="/blogdetails" element={<BlogDetails />} />
         <Route path="/postblog" element={<PostBlog />} />
       </Route>
+
       {/* auth routes */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />{" "}
         <Route path="/register" element={<RegisgerPage />} />
       </Route>
+
       {/* admin routes */}
       <Route path="/admin" element={<AdminLayout />}>
-        <Route path="/admin/profile" element={<AdminProfile />}></Route>
+        <Route path="/admin/profile" element={<AdminProfile />} />
+        <Route path="/admin/roles" element={<ManageRolePage />} />
       </Route>
     </>
   )
