@@ -24,11 +24,11 @@ const Sidebar = () => {
 
         {/* Dashboard */}
         <Link
-          to="/admin/dashboard"
+          to="/admin/manageuser"
           className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
         >
           <i className="ri-dashboard-fill text-black dark:text-white"></i>
-          <span className="text-black dark:text-white">Dashboard</span>
+          <span className="text-black dark:text-white">Manage User </span>
         </Link>
 
         {/* Manage Roles */}
@@ -42,7 +42,7 @@ const Sidebar = () => {
 
         {/* Manage Permissions */}
         <Link
-          to="/admin/permissions"
+          to="/admin/assignpermission"
           className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
         >
           <i className="ri-lock-2-fill text-black dark:text-white"></i>
@@ -59,7 +59,7 @@ const Sidebar = () => {
         </Link>
 
         {/* Assign Role to User */}
-        <Link
+        {/* <Link
           to="/admin/assign-roles"
           className="flex items-center gap-3 text-lg p-2 rounded-sm hover:bg-gray-100 hover:dark:bg-gray-700"
         >
@@ -67,7 +67,7 @@ const Sidebar = () => {
           <span className="text-black dark:text-white">
             Assign Roles to Users
           </span>
-        </Link>
+        </Link> */}
 
         {/* Manage Comments */}
         <Link

@@ -29,6 +29,7 @@ import AdminLayout from "./layout/AdminLayout.jsx";
 import AdminProfile from "./pages/admin/AdminProfile.jsx";
 import ManageRolePage from "./pages/admin/ManageRolePage.jsx";
 import ManageAssignRoleUser from "./pages/admin/ManageUserPage.jsx";
+import AssignPermission from "./pages/admin/AssignPermissionToRole.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -56,6 +57,7 @@ const router = createBrowserRouter(
         <Route path="/admin/profile" element={<AdminProfile />} />
         <Route path="/admin/roles" element={<ManageRolePage />} />
         <Route path="/admin/manageuser" element={<ManageAssignRoleUser />} />
+        <Route path="/admin/assignpermission" element={<AssignPermission />} />
       </Route>
     </>
   )

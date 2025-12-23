@@ -31,7 +31,7 @@ const ManageAssignRoleUser = () => {
   };
 
   return (
-    <div className="max-w-3xl bg-white p-6 rounded shadow">
+    <div className=" bg-white p-10">
       <h2 className="text-lg font-semibold mb-6 text-gray-800">
         Assign Role to User
       </h2>
@@ -75,7 +75,7 @@ const ManageAssignRoleUser = () => {
       </form>
 
       {/* User Role List */}
-      <h3 className="text-md font-semibold mb-3 text-gray-800">User Roles</h3>
+      {/* <h3 className="text-md font-semibold mb-3 text-gray-800">User Roles</h3>
 
       <ul className="space-y-2">
         {users.map((u) => (
@@ -87,6 +87,33 @@ const ManageAssignRoleUser = () => {
             <span className="text-sm bg-gray-100 px-3 py-1 rounded">
               {u.role}
             </span>
+          </li>
+        ))}
+      </ul> */}
+
+      <h2 className="text-lg font-semibold mb-6">User Role Management</h2>
+
+      <ul className="space-y-3">
+        {users.map((u) => (
+          <li
+            key={u._id}
+            className="flex justify-between items-center border px-4 py-2 rounded"
+          >
+            <div>
+              <p className="font-medium">{u.username}</p>
+              <p className="text-sm text-gray-600">
+                Role: {u.role?.name || "No role assigned"}
+              </p>
+            </div>
+
+            {u.role && (
+              <button
+                onClick={() => handleRemoveRole(u._id, u.role._id)}
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              >
+                Remove
+              </button>
+            )}
           </li>
         ))}
       </ul>
