@@ -1,12 +1,12 @@
-# ThinkFlow
+# Blogify
 
-**ThinkFlow** is a full-stack content sharing platform built using the MERN stack. It allows users to express their thoughts, share experiences, and write posts across various topics such as education, health, technology, and more. The platform supports role-based access control (RBAC) to manage permissions and ensure secure content moderation.
+**Blogify** is a full-stack content sharing platform built using the MERN stack. It allows users to express their thoughts, share experiences, and write posts across various topics such as education, health, technology, and more. The platform supports role-based access control (RBAC) to manage permissions and ensure secure content moderation.
 
 ---
 
 ## Project Overview
 
-ThinkFlow enables users to create, manage, and engage with posts in a structured and interactive way. Users can follow authors, like and comment on posts, save content for later, and filter posts by categories. Admins have advanced control over roles and permissions, making the platform scalable and secure.
+Blogify enables users to create, manage, and engage with posts in a structured and interactive way. Users can follow authors, like and comment on posts, save content for later, and filter posts by categories. Admins have advanced control over roles and permissions, making the platform scalable and secure.
 
 ---
 
